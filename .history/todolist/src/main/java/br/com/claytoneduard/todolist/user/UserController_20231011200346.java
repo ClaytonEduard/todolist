@@ -19,19 +19,18 @@ public class UserController {
     @PostMapping("/")
     public ResponseEntity create(@RequestBody UserModel userModel) {
         // verificar se o usuario ja exite
-        var user = this.userRepository.findByUsername(userModel.getUsername());
-        if (user != null) {
-            // mensagem de erro
+       var user = this.userRepository.findByUsername(userModel.getUsername());
+        if(user !=null){
+            //mensagem de erro
             // mensagem de status
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário jé existe");
         }
 
         // encriptando a senha
-        var passwordHashred = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
-        userModel.setPassword(passwordHashred);
+       var passwordHashred = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
 
-        var userCreated = this.userRepository.save(userModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
+      var userCreated = this.userRepository.save(userModel);
+      return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 
 }
