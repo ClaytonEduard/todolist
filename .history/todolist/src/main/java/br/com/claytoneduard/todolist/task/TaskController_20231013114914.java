@@ -62,15 +62,8 @@ public class TaskController {
 
         var task = this.taskRepository.findById(id).orElse(null);
 
-        // verifica se a tarefa e null
-        if (task == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Tarefa não encontrada");
-        }
-
         // verificando se a tarefa pertence ao usuario
         var idUser = request.getAttribute("idUser");
-
         if (!task.getIdUser().equals(idUser)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Usuário não tem permissão para alterar esta tarefa.");
@@ -78,7 +71,7 @@ public class TaskController {
 
         Utils.copyNonNullProperties(taskModel, task);
         var taskUpdated = this.taskRepository.save(task);
-        return ResponseEntity.ok().body(taskUpdated);
+        return ResponseEntity.ok().body(this.taskRepository.save(taskUpdated));
 
     }
 
